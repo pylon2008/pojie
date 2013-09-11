@@ -1,0 +1,169 @@
+var PatchCodeBaseAddr
+var CRCMemPatchCodeAddrDest1
+var CRCMemPatchCodeAddrDestStr1
+var CRCMemPatchCodeAsmTxtSrc1
+var CRCMemPatchCodeAsmTxtDest1
+var CRCMemPatchCodeAddrDest2
+var CRCMemPatchCodeAddrDestStr2
+var CRCMemPatchCodeAsmTxtSrc2
+var CRCMemPatchCodeAsmTxtDest2
+
+MOV PatchCodeBaseAddr, 0
+ALLOC 1000
+MOV PatchCodeBaseAddr, $RESULT
+
+MOV CRCMemPatchCodeAddrDest1, PatchCodeBaseAddr
+MOV CRCMemPatchCodeAddrDestStr1, "00"
+ITOA CRCMemPatchCodeAddrDest1
+ADD CRCMemPatchCodeAddrDestStr1, $RESULT
+ASMTXT CRCMemPatchCodeAddrDest1, "F:\安装文件\odbg110\Script\CRCMemPatchCode1.txt"
+
+VAR PTR
+VAR ASMLEN
+MOV PTR, PatchCodeBaseAddr
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+MOV CRCMemPatchCodeAddrDest2, PTR
+MOV CRCMemPatchCodeAddrDestStr2, "00"
+ITOA CRCMemPatchCodeAddrDest2
+ADD CRCMemPatchCodeAddrDestStr2, $RESULT
+ASMTXT CRCMemPatchCodeAddrDest2, "F:\安装文件\odbg110\Script\CRCMemPatchCode2.txt"
+
+BPRM 401A6C,1
+RUN
+EOB CRCMemRead
+
+CRCMemRead:
+BPMC
+
+MOV CRCMemPatchCodeAsmTxtSrc1, "JMP "
+ADD CRCMemPatchCodeAsmTxtSrc1, CRCMemPatchCodeAddrDestStr1
+ASM 10153F37, CRCMemPatchCodeAsmTxtSrc1
+
+MOV CRCMemPatchCodeAsmTxtSrc2, "JMP "
+ADD CRCMemPatchCodeAsmTxtSrc2, CRCMemPatchCodeAddrDestStr2
+ASM 10126B19, CRCMemPatchCodeAsmTxtSrc2
+
+//BP 10153F37
+//BP 10126B19
+//BP 10126B14
+BPL 10126B19, "eax"
+
+RUN
+
+
+
+
+// 手动
+/*
+var CRCMemPatchCodeAddrDest1
+var CRCMemPatchCodeAddrDestStr1
+var CRCMemPatchCodeAsmTxtSrc1
+var CRCMemPatchCodeAsmTxtDest1
+var CRCMemPatchCodeAddrDest2
+var CRCMemPatchCodeAddrDestStr2
+var CRCMemPatchCodeAsmTxtSrc2
+var CRCMemPatchCodeAsmTxtDest2
+
+
+MOV CRCMemPatchCodeAddrDestStr1, "00"
+ALLOC 1000
+MOV CRCMemPatchCodeAddrDest1,$RESULT
+ITOA CRCMemPatchCodeAddrDest1
+ADD CRCMemPatchCodeAddrDestStr1, $RESULT
+
+MOV CRCMemPatchCodeAddrDestStr2, "00"
+ALLOC 1000
+MOV CRCMemPatchCodeAddrDest2,$RESULT
+ITOA CRCMemPatchCodeAddrDest2
+ADD CRCMemPatchCodeAddrDestStr2, $RESULT
+
+BPRM 401A6C,1
+RUN
+EOB CRCMemRead
+
+CRCMemRead:
+//BP 10153F5A
+//BPL 10153F5A, "eax"
+//BPL 10126B19, "eax"
+
+MOV CRCMemPatchCodeAsmTxtSrc1, "JMP "
+ADD CRCMemPatchCodeAsmTxtSrc1, CRCMemPatchCodeAddrDestStr1
+ASM 10153F37, CRCMemPatchCodeAsmTxtSrc1
+VAR PTR
+VAR ASMLEN
+MOV PTR, CRCMemPatchCodeAddrDest1
+ASM PTR, "MOV EAX,64970D52"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+ASM PTR, "MOV DWORD PTR DS:[100216A8],EAX"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+ASM PTR, "JMP 10153F3C"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+
+MOV CRCMemPatchCodeAsmTxtSrc2, "JMP "
+ADD CRCMemPatchCodeAsmTxtSrc2, CRCMemPatchCodeAddrDestStr2
+ASM 10126B19, CRCMemPatchCodeAsmTxtSrc2
+MOV PTR, CRCMemPatchCodeAddrDest2
+ASM PTR, "MOV EAX,6EA8EA07"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+ASM PTR, "INC ECX"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+ASM PTR, "MOV CX,28D1"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+ASM PTR, "JMP 10126B1E"
+MOV ASMLEN, $RESULT
+ADD PTR,ASMLEN
+
+
+BPMC
+RUN
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+VAR LoadLibraryATime
+VAR LoadLibraryAAddr
+
+MOV LoadLibraryATime, 0
+
+GPA "LoadLibraryA", "kernel32.dll"
+MOV LoadLibraryAAddr,$RESULT
+BP LoadLibraryAAddr
+RUN
+EOB LoadLibraryA
+
+LoadLibraryA:
+INC LoadLibraryATime
+CMP LoadLibraryATime, 4
+JE LoadLibraryA_ai32fplayds
+RUN
+EOB LoadLibraryA
+
+LoadLibraryA_ai32fplayds:
+BC LoadLibraryAAddr
+BPL 10153F5A, "eax"
+RUN
+*/
+
+
