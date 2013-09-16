@@ -7,27 +7,105 @@ var CRCMemPatchCodeAddrDest2
 var CRCMemPatchCodeAddrDestStr2
 var CRCMemPatchCodeAsmTxtSrc2
 var CRCMemPatchCodeAsmTxtDest2
+VAR PTR
+VAR ASMLEN
 
 MOV PatchCodeBaseAddr, 0
 ALLOC 1000
 MOV PatchCodeBaseAddr, $RESULT
+MOV PTR, PatchCodeBaseAddr
+MOV ASMLEN, 0
 
+BP 004ABFAC
+RUN
+EOB CRCMemRead
+
+CRCMemRead:
+BC 004ABFAC
+
+var dllBaseAddr
+MOV dllBaseAddr, 0
+MOV dllBaseAddr, eax
+
+var addr0
+MOV addr0, dllBaseAddr
+ADD addr0, 153F37
+// 目标地址准备
 MOV CRCMemPatchCodeAddrDest1, PatchCodeBaseAddr
 MOV CRCMemPatchCodeAddrDestStr1, "00"
 ITOA CRCMemPatchCodeAddrDest1
 ADD CRCMemPatchCodeAddrDestStr1, $RESULT
-ASMTXT CRCMemPatchCodeAddrDest1, "G:\加密与解码\Tools\odbg110\Script\CRCMemPatchCode1.txt"
-
-VAR PTR
-VAR ASMLEN
-MOV PTR, PatchCodeBaseAddr
+ASMTXT CRCMemPatchCodeAddrDest1, "F:\安装文件\odbg110\ScriptEx\CRCMemPatchCode1.txt"
 MOV ASMLEN, $RESULT
-ADD PTR,ASMLEN
+ADD PTR, ASMLEN
+MOV [PTR], [addr0], 5
+ADD PTR, 5
+MOV [PTR], C3, 1
+ADD PTR, 1
+// 源地址跳转
+MOV CRCMemPatchCodeAsmTxtSrc1, "CALL "
+ADD CRCMemPatchCodeAsmTxtSrc1, CRCMemPatchCodeAddrDestStr1
+ASM addr0, CRCMemPatchCodeAsmTxtSrc1
+log addr0
+log PTR
+
+var addr1
+MOV addr1, dllBaseAddr
+ADD addr1, 126B19
+// 目标地址准备
 MOV CRCMemPatchCodeAddrDest2, PTR
 MOV CRCMemPatchCodeAddrDestStr2, "00"
 ITOA CRCMemPatchCodeAddrDest2
 ADD CRCMemPatchCodeAddrDestStr2, $RESULT
-ASMTXT CRCMemPatchCodeAddrDest2, "G:\加密与解码\Tools\odbg110\Script\CRCMemPatchCode2.txt"
+ASMTXT CRCMemPatchCodeAddrDest2, "F:\安装文件\odbg110\ScriptEx\CRCMemPatchCode2.txt"
+MOV ASMLEN, $RESULT
+ADD PTR, ASMLEN
+MOV [PTR], [addr1], 5
+ADD PTR, 5
+MOV [PTR], C3, 1
+ADD PTR, 1
+// 源地址跳转
+MOV CRCMemPatchCodeAsmTxtSrc2, "CALL "
+ADD CRCMemPatchCodeAsmTxtSrc2, CRCMemPatchCodeAddrDestStr2
+ASM addr1, CRCMemPatchCodeAsmTxtSrc2
+log addr1
+log PTR
+
+RUN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+var PatchCodeBaseAddr
+var CRCMemPatchCodeAddrDest1
+var CRCMemPatchCodeAddrDestStr1
+var CRCMemPatchCodeAsmTxtSrc1
+var CRCMemPatchCodeAsmTxtDest1
+var CRCMemPatchCodeAddrDest2
+var CRCMemPatchCodeAddrDestStr2
+var CRCMemPatchCodeAsmTxtSrc2
+var CRCMemPatchCodeAsmTxtDest2
+VAR PTR
+VAR ASMLEN
+
+MOV PatchCodeBaseAddr, 0
+ALLOC 1000
+MOV PatchCodeBaseAddr, $RESULT
+MOV PTR, PatchCodeBaseAddr
+MOV ASMLEN, 0
 
 BPRM 401A6C,1
 RUN
@@ -39,31 +117,67 @@ BPMC
 var addr0
 MOV addr0, [esp+8]
 SUB addr0, 23
+
+MOV CRCMemPatchCodeAddrDest1, PatchCodeBaseAddr
+MOV CRCMemPatchCodeAddrDestStr1, "00"
+ITOA CRCMemPatchCodeAddrDest1
+ADD CRCMemPatchCodeAddrDestStr1, $RESULT
+ASMTXT CRCMemPatchCodeAddrDest1, "F:\安装文件\odbg110\ScriptEx\CRCMemPatchCode1.txt"
+MOV ASMLEN, $RESULT
+ADD PTR, ASMLEN
+
+MOV [PTR], [addr0], 5
+ADD PTR, 5
+MOV [PTR], C3, 1
+ADD PTR, 1
+
 MOV CRCMemPatchCodeAsmTxtSrc1, "CALL "
 ADD CRCMemPatchCodeAsmTxtSrc1, CRCMemPatchCodeAddrDestStr1
 ASM addr0, CRCMemPatchCodeAsmTxtSrc1
 
+//BP addr0
 
-//BP 03843F37
-//BP 04f66B19
-//BP 04f66B14
-//BPL 04f66B19, "eax"
+log addr0
+log PTR
 
 BPRM 401A6C,1
+COB
 RUN
 EOB 2CRCMemRead
 
 2CRCMemRead:
 BPMC
 var addr1
-MOV addr1, [esp]
-DEC addr1, 23
+MOV addr1, [esp+8]
+ADD addr1, 0
+
+MOV CRCMemPatchCodeAddrDest2, PTR
+MOV CRCMemPatchCodeAddrDestStr2, "00"
+ITOA CRCMemPatchCodeAddrDest2
+ADD CRCMemPatchCodeAddrDestStr2, $RESULT
+ASMTXT CRCMemPatchCodeAddrDest2, "F:\安装文件\odbg110\ScriptEx\CRCMemPatchCode2.txt"
+MOV ASMLEN, $RESULT
+ADD PTR, ASMLEN
+
+MOV [PTR], [addr1], 5
+ADD PTR, 5
+MOV [PTR], C3, 1
+ADD PTR, 1
 
 MOV CRCMemPatchCodeAsmTxtSrc2, "CALL "
 ADD CRCMemPatchCodeAsmTxtSrc2, CRCMemPatchCodeAddrDestStr2
-ASM 04f66B19, CRCMemPatchCodeAsmTxtSrc2
+ASM addr1, CRCMemPatchCodeAsmTxtSrc2
+
+//BP addr1
+log addr1
+log PTR
 
 RUN
+*/
+
+
+
+
 
 // 手动
 /*
