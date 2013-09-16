@@ -7,6 +7,10 @@ var CRCMemPatchCodeAddrDest2
 var CRCMemPatchCodeAddrDestStr2
 var CRCMemPatchCodeAsmTxtSrc2
 var CRCMemPatchCodeAsmTxtDest2
+var CRCMemPatchCodeAddrDest3
+var CRCMemPatchCodeAddrDestStr3
+var CRCMemPatchCodeAsmTxtSrc3
+var CRCMemPatchCodeAsmTxtDest3
 VAR PTR
 VAR ASMLEN
 
@@ -48,6 +52,7 @@ ADD CRCMemPatchCodeAsmTxtSrc1, CRCMemPatchCodeAddrDestStr1
 ASM addr0, CRCMemPatchCodeAsmTxtSrc1
 log addr0
 log PTR
+//BP addr0
 
 var addr1
 MOV addr1, dllBaseAddr
@@ -70,12 +75,31 @@ ADD CRCMemPatchCodeAsmTxtSrc2, CRCMemPatchCodeAddrDestStr2
 ASM addr1, CRCMemPatchCodeAsmTxtSrc2
 log addr1
 log PTR
+//BP addr1
+
+var addr2
+MOV addr2, 004ABFAC
+// 目标地址准备
+MOV CRCMemPatchCodeAddrDest3, PTR
+MOV CRCMemPatchCodeAddrDestStr3, "00"
+ITOA CRCMemPatchCodeAddrDest3
+ADD CRCMemPatchCodeAddrDestStr3, $RESULT
+ASMTXT CRCMemPatchCodeAddrDest3, "F:\安装文件\odbg110\ScriptEx\CRCMemPatchCode3.txt"
+MOV ASMLEN, $RESULT
+ADD PTR, ASMLEN
+MOV [PTR], [addr2], 5
+ADD PTR, 5
+MOV [PTR], C3, 1
+ADD PTR, 1
+// 源地址跳转
+MOV CRCMemPatchCodeAsmTxtSrc3, "CALL "
+ADD CRCMemPatchCodeAsmTxtSrc3, CRCMemPatchCodeAddrDestStr3
+ASM addr2, CRCMemPatchCodeAsmTxtSrc3
+log addr2
+log PTR
+//BP addr2
 
 RUN
-
-
-
-
 
 
 
