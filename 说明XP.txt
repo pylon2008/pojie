@@ -692,6 +692,14 @@ FCW 1372  Prec NEAR,64  Mask    1 1 0 0 1 0
 00446C2E    FF35 94845600   PUSH DWORD PTR DS:[568494]               ; 诊断学01.0045DE20
 00446C34    C3              RETN
 
+/////////////////////////////////////////////
+异常处理函数
+0053B4CB    8BC4            MOV EAX,ESP
+
+0012D6F0   7370DA74  <JMP.&msvcrt._except_handler3>
+0012D6F4   736DD760  ddraw.736DD760
+
+
 
 DS:[00C448F4]=00000000
 DS:[00C437BC]=00000000
