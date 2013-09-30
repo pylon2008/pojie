@@ -1,0 +1,11 @@
+bpcnd 00446BF8, "!ZF==1"
+EOB FLAG1
+RUN
+
+FLAG1:
+var addr
+mov addr, eax
+add addr, 1098
+log addr
+log [addr]
+RUN
